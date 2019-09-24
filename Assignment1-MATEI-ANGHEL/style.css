@@ -1,0 +1,140 @@
+/* Global */
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #010101;
+  color: #D9D4D8;
+  height: 100vh;
+  display: grid;
+  grid-gap: 20px;
+  grid-template-rows: 20vh 15vh auto 15vh;
+  grid-template-columns: 1fr;
+  grid-template-areas: 
+    "header"
+    "nav"
+    "main"
+    "footer";
+}
+
+img{
+  width: 50vw;
+}
+
+/* Links */
+a{
+  color: #72A19B;
+}
+
+a:hover{
+  color: #c1bfbf;
+}
+
+/* Headings */
+h1{
+  text-decoration: underline;
+}
+
+/* Grid Children */
+body >*{
+  padding: 30px;
+  background-color: #050505;
+}
+
+/* Header stuff and grid areas */
+header{
+  grid-area: header;
+}
+/* End of Header stuff */
+
+nav{
+  grid-area: nav;
+}
+
+footer{
+  grid-area: footer;
+}
+
+main{
+  grid-area: main;
+}
+
+/* Media Queries for Dynamic Size */
+@media (max-width: 799px){
+  header{
+    background-color: rgb(23, 29, 25);
+  }
+  
+  nav{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 800px){
+  body{
+    grid-template-rows: 100vh 10vh auto 15vh;
+    grid-template-areas:
+      "header"
+      "nav"
+      "main"
+      "footer";
+  }
+
+  nav{
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-direction: row;
+  }
+
+  .header-image{
+    /* The image used */
+    background-image: url("images/Wet_leaves.jpg");
+    
+    /* Add the blur effect */
+    filter: blur(4px);
+    -webkit-filter: blur(4px);
+    
+    /* Full height */
+    height: 100%;
+    
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .header-text{
+    background-color: black; /* Fallback color */
+    background-color: rgba(0,0,0, 0.6); /* Black w/opacity/see-through */
+    color: white;
+    font-weight: bold;
+    border: 3px solid #f1f1f1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    padding: 20px;
+    text-align: center;
+  }
+}
+
+@media (min-width: 1200px){
+  body{
+    grid-template-rows: 100vh auto 15vh;
+    grid-template-columns: 30vh auto;
+    grid-template-areas:
+      "header header"
+      "nav main"
+      "footer footer";
+  }
+
+  nav{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+  }
+}
