@@ -1,7 +1,12 @@
 "use strict";
 
-function multiplyTwoNumbers(x, y){
-	return x * y;
+let vector2 = {
+	x : 0,
+	y : 0,
+}
+
+function multiplyTwoNumbers(vector2){
+	return vector2.x * vector2.y;
 }
 
 function sayHi(name, age){
@@ -56,5 +61,38 @@ function secretCode(inputText){
 }
 
 function mostFrequent(stringArray){
-	
+	stringArray.sort();
+	let max = 0;
+	let index = 0;
+	let count = 0;
+	for(let i = 1; i < stringArray.length; i++){
+		if(stringArray[i] == stringArray[i - 1]){
+			count++;
+			if(count > max){
+				max = count;
+				index = i;
+			}
+		}
+		else{
+			count = 0;
+		}
+	}
+	return stringArray[index];
+}
+
+function nonUniqueElements(integerArray){
+	for(let i = 0; i < integerArray.length; i++){
+		let count = 0;
+		for(let j = 0; j < integerArray.length; j++){
+			if(integerArray[i] == integerArray[j]){
+				count++;
+			}
+		}
+
+		if(count < 2){
+			integerArray.splice(i, 1);
+		}
+	}
+
+	return integerArray;
 }
