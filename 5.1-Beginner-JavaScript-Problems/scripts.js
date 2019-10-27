@@ -33,3 +33,28 @@ function fizzBuzz(n){
 		return String(n);
 	}
 }
+
+function digitsMultiplication(n){
+	let nString = String(n);
+	let nProduct = 1;
+	for(const num of nString){
+		if(num != 0){
+			nProduct *= num;
+		}
+	}
+	return nProduct;
+}
+
+function secretCode(inputText){
+	let result = "";
+	for(let letter of String(inputText)){
+		if(letter != letter.toLowerCase()){
+			result += letter;
+		}
+	}
+	return result;
+}
+
+function mostFrequent(stringArray){
+	
+}
