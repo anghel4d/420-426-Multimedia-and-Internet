@@ -24,4 +24,8 @@ flight_num|mission_name|video|date
 Page 2 https://api.spacexdata.com/v3/launches/next
 -Countdown to next launch (in big bold letters, centered)
 -Time since last launch underneath
+
+Popup on table rows of page 2: Rocket deets when rocket name is clicked on
+
+Site must pass aXe
 */
