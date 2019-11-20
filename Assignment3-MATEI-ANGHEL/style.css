@@ -6,87 +6,108 @@ body{
     height: 100vh;
     display: grid;
     grid-gap: 20px;
-    grid-template-rows: 100vh 10vh auto 15vh;
-    grid-template-areas:
+    grid-template-rows: 80px 90vh 10vh;
+	grid-template-areas:
         "header"
-        "nav"
         "main"
-        "footer";  
-  }
+        "nav";
+}
   
-  img{
-    width: 50vw;
-  }
+#banner{
+	height: 80px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
   
-  /*---- Links ----*/
-  a{
-    color: #72A19B;
-  }
+/*---- Links ----*/
+a{
+	color: #72A19B;
+}
   
-  a:hover{
-    color: #c1bfbf;
-  }
+a:hover{
+	color: #c1bfbf;
+}
   
-  /*---- Headings ----*/
-  h1{
-    text-decoration: underline;
-  }
+/*---- Grid Setup ----*/
+body >*{
+	background-color: #050505;
+}
   
-  /*---- Grid Setup ----*/
-  body >*{
-    padding: 30px;
-    background-color: #050505;
-  }
-  
-  header{
+header{
     grid-area: header;
-  }
+    background-color: black;
+}
   
-  nav{
+nav{
     grid-area: nav;
-  }
+}
   
-  footer{
-    grid-area: footer;
-  }
+footer{
+	grid-area: footer;
+}
   
-  main{
-    grid-area: main;
-  }
+main{
+	grid-area: main;
+}
   
-  /*---- Media Queries for Dynamic Stuff ----*/
+/*---- Nav Styling ----*/
+.nav-buttons{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
 
-  /* Small Screens */
-  @media (max-width: 899px){
-    body{
-        grid-template-rows: 10vh 10vh auto 15vh;
-    }
-    
-    nav{
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      flex-direction: column;
-    }
+.nav-buttons > li:hover{
+	background-color: #010555;
+}
 
-    .header-image{
-        /* The image used */
-        background-image: url("images/spacexlogo.jpg");
-        background-size: cover;
-    }
-  }
+/*---- Timer Styling ----*/
+#timer-image{
+	/* The image used */
+	background-image: url("images/falconheavy.jpg");
+	
+	/* Add the blur effect */
+	filter: blur(3px);
+	-webkit-filter: blur(3px);
+	
+	/* Full height */
+	height: 100%;
+	width: 100%;
+	
+	/* Center and scale the image nicely */
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.timer-text{
+	background-color: black; /* Fallback color */
+	background-color: rgba(0,0,0, 0.6); /* Black w/opacity/see-through */
+	color: white;
+	font-weight: bold;
+	border: 3px solid #f1f1f1;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 80%;
+	padding: 20px;
+	text-align: center;
+}
+
+/*---- Timer and Table Styling ----*/
+
+/*---- Media Queries for Dynamic Stuff ----*/
+
+/* Small Screens */
+@media (max-width: 899px){
+}
   
-  /* Big Screens */
-  @media (min-width: 900px){
-    nav{
-      display: flex;
-      justify-content: space-around;
-      align-items: flex-start;
-      flex-direction: row;
-    }
-
-    .header-image{
-        /* The image used */
+/* Big Screens */
+@media (min-width: 900px){
+	#timer-image{
+		/* The image used */
         background-image: url("images/falconheavy.jpg");
         
         /* Add the blur effect */
@@ -95,25 +116,30 @@ body{
         
         /* Full height */
         height: 100%;
+        width: 100%;
         
         /* Center and scale the image nicely */
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
     }
+
+    .nav-buttons > li:hover{
+		background-color: red;
+    }
   
-    .header-text{
-      background-color: black; /* Fallback color */
-      background-color: rgba(0,0,0, 0.6); /* Black w/opacity/see-through */
-      color: white;
-      font-weight: bold;
-      border: 3px solid #f1f1f1;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 80%;
-      padding: 20px;
-      text-align: center;
+    .timer-text{
+		background-color: black; /* Fallback color */
+		background-color: rgba(0,0,0, 0.6); /* Black w/opacity/see-through */
+		color: white;
+		font-weight: bold;
+		border: 3px solid #f1f1f1;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 80%;
+		padding: 20px;
+		text-align: center;
     }
   }

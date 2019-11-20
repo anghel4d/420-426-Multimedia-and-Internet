@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html lang="en" >
 <head>
-  <meta charset="UTF-8">
-  <title>SpaceX Fan InfoSite</title>
-  <link rel="stylesheet" href="./style.css">
+	<meta charset="UTF-8"/>
+	<meta lang="en"/>
+	<meta name="author" content="Matei Anghel"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>SpaceX Fan InfoSite</title>
+	<link rel="stylesheet" href="./style.css"/>
 </head>
 <body>
-  <script src="main.js"></script>
-  <header>
-    <div class="header-image"></div>
-    <div class="header-text">
-      <h1>SPACEX</h1>
-      <p>Rockets are Cool</p>
-    </div>
-  </header>
-  <nav>
-    <a href="#footer">Timer</a>
-    <a href="#about">Launches</a>
-  </nav>
-  <main>
-    <h1 id="about">Why are we still here (on Earth)? Just to suffer?</h1>
-  </main>
-  <footer id="footer">
-  </footer>
+	<header>
+		<img id="banner" src="images/spacexbanner.jpg"/>
+	</header>
+	<main>
+	<img id="timer-image"></img>
+		<div class="timer-text">
+			<h1>
+				<span id="t-Days">DD:</span>
+				<span id="t-Hours">hh:</span>
+				<span id="t-Minutes">mm:</span>
+				<span id="t-Seconds">ss</span>
+			</h1>
+			<h3>Until Next Launch</h3>
+		</div>
+	</main>
+	<nav>
+		<ul class="nav-buttons">
+			<li><a href="launches.html">Launches</a></li>
+			<li><a href="rockets.html">Rockets</a></li>
+		</ul>
+	</nav>
+	<script src="main.js"></script>
 </body>
 </html>

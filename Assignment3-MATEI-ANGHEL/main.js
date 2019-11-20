@@ -1,6 +1,6 @@
 const url = "https://api.spacexdata.com/v3/"    // The root of SpaceX API
 
-fetch(url)
+fetch("https://api.spacexdata.com/v3/launches/past?limit=5")
     .then(response => response.json())
     .then(data => {
         doStuff(data)
@@ -14,7 +14,7 @@ function doStuff(data){
 }
 // Plan:
 /*
-Page 1 https://api.spacexdata.com/v3/launches/past
+Page 1 https://api.spacexdata.com/v3/launches/past?limit=3
 -Table of launches
 >descending chronological order (latest -> oldest)
 flight_num|mission_name|video|date
