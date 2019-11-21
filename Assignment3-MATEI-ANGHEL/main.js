@@ -34,9 +34,9 @@ var updateTimer = setInterval(function() {
 	let displayHours = clock.querySelector("#t-Hours");
 	let displayDays = clock.querySelector("#t-Days");
 
-	displaySeconds.innerHTML = secondsLeft;
-	displayMinutes.innerHTML = minutesLeft + ":";
-	displayHours.innerHTML = hoursLeft + ":";
+	displaySeconds.innerHTML = ("0" + secondsLeft).slice(-2);
+	displayMinutes.innerHTML = ("0" + minutesLeft).slice(-2) + ":";
+	displayHours.innerHTML = ("0" + hoursLeft).slice(-2) + ":";
 	displayDays.innerHTML = daysLeft + ":";;
 
 	if(t < 0){
@@ -47,7 +47,23 @@ var updateTimer = setInterval(function() {
 }, 1000);
 
 // Table Logic
+function tableSubmit(){
+	let submission = document.getElementById("launchInput");
+	formValidation(submission);
+	let limit = submission.value;
+	const path = "launches/past?filter=flight_number,mission_name,launch_year,launch_success,video_link,mission_patch_small&limit=" + limit;
+}
 
+function formValidation(form){
+	if(form.value == "" || isNaN(form.value)){
+		alert("Please enter a number.");
+		form.focus();
+	}
+}
+
+function tableFill(){
+
+}
 
 // Plan:
 /*

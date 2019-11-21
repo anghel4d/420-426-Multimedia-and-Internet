@@ -70,7 +70,7 @@ li a{
 }
 
 /*---- Timer Styling ----*/
-#timer-image{
+.background-img{
 	/* The image used */
 	background-image: url("images/falconheavy.jpg");
 	
@@ -88,9 +88,9 @@ li a{
 	background-size: cover;
 }
 
-.timer-text{
+.content{
 	background-color: black; /* Fallback color */
-	background-color: rgba(0,0,0, 1); /* Black w/opacity/see-through */
+	background-color: rgba(0,0,0, 0.8); /* Black w/opacity/see-through */
 	color: white;
 	font-weight: bold;
 	border: 3px solid #f1f1f1;
@@ -103,7 +103,23 @@ li a{
 	text-align: center;
 }
 
-/*---- Timer and Table Styling ----*/
+/*---- Table Styling ----*/
+table{
+	width: 100%;
+	
+}
+
+table, th, td{
+	border: 2px solid white;
+}
+
+#launches-image{
+	background-image: url("images/twinfalcons.jpg");
+}
+
+form{
+	padding-bottom: 30px;
+}
 
 /*---- Media Queries for Dynamic Stuff ----*/
 

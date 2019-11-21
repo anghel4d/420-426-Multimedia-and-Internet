@@ -13,21 +13,29 @@
 	<img id="banner" src="images/spacexbanner.jpg"/>
 	</header>
 	<main>
-	<img id="timer-image"></img>
-	<div class="timer-text">
-			<h1>
-				<span id="t-Days">DD:</span>
-				<span id="t-Hours">hh:</span>
-				<span id="t-Minutes">mm:</span>
-		<span id="t-Seconds">ss</span>
-		</h1>
-			<h3>Until Next Launch</h3>
-		</div>
+	<img id="launches-image" class="background-img"></img>
+	<div id="launches-data" class="content">
+		<form oninput="tableCheck()" onsubmit="tableSubmit()">
+			Launches: <input id="launchInput" type="text">
+			<input type="submit">
+		</form>
+		<table id="launches-table">
+			<tr>
+				<th>ID</th>
+				<th>Mission Name</th>
+				<th>Year</th>
+				<th>Status</th>
+				<th>Video</th>
+				<th>Patch</th>
+			</tr>
+		</table>
+	</div>
+	</div>
 	</main>
 	<nav>
 		<ul class="nav-buttons">
-			<li><a href="#footer">Launches</a></li>
-			<li><a href="#about">Rockets</a></li>
+			<li><a href="index.html">Countdown</a></li>
+			<li><a href="rockets.html">Rockets</a></li>
 		</ul>
 	</nav>
 </html>
