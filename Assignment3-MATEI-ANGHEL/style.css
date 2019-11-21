@@ -121,6 +121,10 @@ form{
 	padding-bottom: 30px;
 }
 
+td img{
+	width: 80px;
+}
+
 /*---- Media Queries for Dynamic Stuff ----*/
 
 /* Small Screens */

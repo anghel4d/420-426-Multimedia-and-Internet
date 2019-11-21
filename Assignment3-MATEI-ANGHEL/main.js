@@ -51,7 +51,13 @@ function tableSubmit(){
 	let submission = document.getElementById("launchInput");
 	formValidation(submission);
 	let limit = submission.value;
-	const path = "launches/past?filter=flight_number,mission_name,launch_year,launch_success,video_link,mission_patch_small&limit=" + limit;
+	const path = "launches/past?filter=flight_number,mission_name,launch_year,launch_success,links&limit=" + limit;
+	fetch(URLROOT + path)
+	.then(response => response.json())
+	.then(data => {tableFill(data)})
+	.catch(function(error){
+		console.log(error);
+	});
 }
 
 function formValidation(form){
@@ -61,8 +67,35 @@ function formValidation(form){
 	}
 }
 
-function tableFill(){
+function tableFill(data){
+	let table = document.getElementById("launches-table");
+	table.innerHTML = 
+	"<tr>\
+		<th>ID</th>\
+		<th>Mission Name</th>\
+		<th>Year</th>\
+		<th>Success</th>\
+		<th>Video</th>\
+		<th>Patch</th>\
+	</tr>"
+	for(const launchItem of data){
+		console.log(launchItem);
+		table.innerHTML +=
+		'<tr>' +
+		'<td>' + launchItem.flight_number + '</td>' +
+		'<td>' + launchItem.mission_name + '</td>' +
+		'<td>' + launchItem.launch_year + '</td>' +
+		'<td>' + launchItem.launch_success + '</td>' +
+		'<td><a href="' + launchItem.links.video_link + ' "target="_blank">[link]</a></td>' +
+		'<td><img src="' + launchItem.links.mission_patch_small + '"/></td>' +
+		'<tr>'
+	}
+}
+	
 
+// Clean Data from previous pages
+function clearData(){
+	clearInterval(updateTimer);
 }
 
 // Plan:

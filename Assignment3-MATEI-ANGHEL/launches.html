@@ -7,7 +7,7 @@
 	<title>SpaceX Fan InfoSite - Launches</title>
 	<link rel="stylesheet" href="./style.css"/>
 </head>
-<body>
+<body id="index-body" onload="clearData()">
 	<script src="main.js"></script>
 	<header>
 	<img id="banner" src="images/spacexbanner.jpg"/>
@@ -15,16 +15,16 @@
 	<main>
 	<img id="launches-image" class="background-img"></img>
 	<div id="launches-data" class="content">
-		<form oninput="tableCheck()" onsubmit="tableSubmit()">
+		<form>
 			Launches: <input id="launchInput" type="text">
-			<input type="submit">
+			<button type="button" onclick="tableSubmit()">Submit</button>
 		</form>
 		<table id="launches-table">
 			<tr>
 				<th>ID</th>
 				<th>Mission Name</th>
 				<th>Year</th>
-				<th>Status</th>
+				<th>Success</th>
 				<th>Video</th>
 				<th>Patch</th>
 			</tr>
