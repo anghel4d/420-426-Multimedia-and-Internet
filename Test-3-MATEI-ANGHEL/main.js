@@ -14,7 +14,7 @@ canvas.width = GAMEWIDTH;
 document.addEventListener('keypress', logKey);
 
 // Create an array of rectangle objects
-const RECTNUM = 1;
+const RECTNUM = 50;
 const RECTSIZE = 50;
 let rectArr = [];
 for(let i = 0; i < RECTNUM; i++){
@@ -44,6 +44,7 @@ function animate(){
     request = requestAnimationFrame(animate);
 }
 
+// catch spacebar keypress
 function logKey(e){
     console.log(e);
     if(e.key === " " || e.code === "Space"){
@@ -51,6 +52,7 @@ function logKey(e){
     }
 }
 
+// Delete contents of quadrant 4
 function clearQuadrant(){
     console.log("Cleared Yellow Quadrant 4");
     rectArr = rectArr.filter(rect => rect.quadrant != 4);
@@ -61,7 +63,7 @@ function clearQuadrant(){
 }
 
 function gameEnd(){
-    // stop requesting animation frames
+    // stop requesting animation frames and print time bigly
     cancelAnimationFrame(request);
     context.clearRect(0, 0, GAMEHEIGHT, GAMEWIDTH);
     timer.printTimeBold();

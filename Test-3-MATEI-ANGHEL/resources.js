@@ -33,7 +33,7 @@ class GameTimer{
         context.font = "30px Arial Bold";
         context.fillStyle = "white";
         let endText = `You won in ${this.getTime()}s`;
-		context.fillText(endText, GAMEWIDTH / 2 - endText.length, GAMEHEIGHT  / 2);
+		context.fillText(endText, GAMEWIDTH / 2, GAMEHEIGHT / 2);
     }
 }
 

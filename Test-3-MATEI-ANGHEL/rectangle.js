@@ -18,7 +18,7 @@ class Rectangle{
         getRandomInteger(minY, maxY));
     }
 
-    setQuadrant(){
+    updateQuadrant(){
         if(this.position.y < GAMEHEIGHT / 2){
             if(this.position.x > GAMEWIDTH / 2){
                 this.quadrant = 1;
@@ -87,7 +87,7 @@ class Rectangle{
     update(){
         this.checkBounds();
         this.updatePosition();
-        this.setQuadrant();
+        this.updateQuadrant();
         this.draw();
     }
 }
