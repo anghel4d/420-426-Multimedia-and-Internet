@@ -8,6 +8,26 @@ canvas.height = 500;
 console.log(canvas.height + "  " + canvas.width);
 console.log(context);
 
-context.fillRect((canvas.width - 100) / 2, (canvas.height - 100) / 2, 100, 100);
-context.clearRect((canvas.width - 80) / 2, (canvas.height - 80) / 2, 80, 80);
-context.strokeRect((canvas.width - 60) / 2, (canvas.height - 60) / 2, 60, 60)
+let squareX = 0;
+let squareY = 0;
+
+document.addEventListener("mousemove", mouseMoveHandler, false);
+function mouseMoveHandler(e){
+    let relativeX = e.clientX - canvas.offsetLeft;
+    let relativeY = e.clientY - canvas.offsetTop;
+    if(relativeX > 0 && relativeY > 0){
+        squareX = relativeX - 100 / 2;
+        squareY = relativeY - 100 / 2;
+    }
+}
+
+function animate(){
+    requestAnimationFrame(animate);
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    context.fillRect(squareX, squareY, 100, 100);
+    context.clearRect(squareX, squareY, 80, 80);
+    context.strokeRect(squareX, squareY, 60, 60)
+}
+
+animate();
