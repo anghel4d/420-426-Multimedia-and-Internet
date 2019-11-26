@@ -1,0 +1,17 @@
+/* Taken from Vikram Singh's car problem solution stylesheet */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #121212;
+}
+
+canvas {
+    background-color: #1F1B24;
+}
