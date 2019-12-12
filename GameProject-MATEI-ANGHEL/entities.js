@@ -67,19 +67,20 @@ class Player extends Entity{
 
     // Player Control Actions
     moveUp(){
-        this.velocity.y -= this.thrustMod;  // Remember that in higher y means lower on the 2d plane
+        console.log("moving player up");
+        this.velocity.y = -this.thrustMod;  // Remember that in higher y means lower on the 2d plane
     }
 
     moveDown(){
-        this.velocity.y += this.thrustMod;
+        this.velocity.y = this.thrustMod;
     }
 
     moveLeft(){
-        this.velocity.x -= this.thrustMod;
+        this.velocity.x = -this.thrustMod;
     }
 
     moveRight(){
-        this.velocity += this.thrustMod;
+        this.velocity.x = this.thrustMod;
     }
 
     travel(){

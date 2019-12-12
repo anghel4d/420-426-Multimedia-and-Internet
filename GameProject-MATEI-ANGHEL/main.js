@@ -16,7 +16,7 @@ const canvasMiddleX = canvas.height / 2;
 canvas.addEventListener('keypress', logKey);
 
 // Intialization
-player = new Player(canvasMiddleX, canvasMiddleY, 0, 0, new Rectangle(10, 10), null, 0, 1, 1);
+player = new Player(canvasMiddleX, canvasMiddleY, 0, 0, new Rectangle(100, 100, "Blue"), null, 0, 1, 1, 10);
 let entities = [player];
 console.log(entities);
 
@@ -47,18 +47,19 @@ function playerControls(e){
         case "Space":
             console.log(player);
             break;
-        case "KeyA":
-            console.log("Moving Left");
-            break;
-        case "KeyD":
-            console.log("Moving Right");
-            break;
         case "KeyW":
-            console.log("Moving Up");
+            player.moveUp();
             break;
         case "KeyS":
-            console.log("Moving Down");
+            player.moveDown();
             break;
+        case "KeyA":
+            player.moveLeft();
+            break;
+        case "KeyD":
+            player.moveRight();
+            break;
+        
     }
 }
 
