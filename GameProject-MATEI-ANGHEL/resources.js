@@ -1,11 +1,58 @@
-class Vector{
+// Spatial Information
+class Vector2d{
     constructor(x, y){
         this.x = x;
         this.y = y;
     }
 
-    add(vector){
-        this.x += vector.x;
-        this.y += vector.y;
+    add(vector2d){
+        this.x += vector2d.x;
+        this.y += vector2d.y;
     }
+}
+
+// Geometry Data
+class Shape{    // has to be updated to remove redundant color tag
+    constructor(colour){
+        this.colour = colour;
+    }
+
+    displayColour(){
+        console.log(this.colour);
+    }
+}
+
+class Rectangle extends Shape{
+    constructor(height, width, colour){
+        super(colour);
+        this.height = height;
+        this.width = width;
+    }
+
+    calculateArea(){
+        return this.height * this.width;
+    }
+}
+
+class Circle extends Shape{
+    constructor(radius, colour){
+        super(colour);
+        this.radius = radius;
+        }
+
+        calculateArea(){
+            return Math.PI * Math.pow(this.radius, 2);
+        }
+}
+
+class Triangle extends Shape{
+    constructor(base, height, colour){
+        super(colour);
+        this.base = base;
+        this.height = height;
+        }
+
+        calculateArea(){
+            return (this.height * this.base) / 2;
+        }
 }
