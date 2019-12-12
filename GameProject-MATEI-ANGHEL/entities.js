@@ -5,7 +5,7 @@ class Entity{
         this.angle = angle;
         this.shape = shape;
         this.sprite = sprite;
-        this.colour = colour;
+        // this.colour = colour;
         this.hitpoints = hitpoints;
     }
 
@@ -24,19 +24,63 @@ class Entity{
     }
 }
 
+class Projectile extends Entity{
+    constructor(damage, range, trajectory){
+        super();
+        this.damage = damage;
+        this.range = range;
+        this.trajectory = trajectory;
+    }
+
+    nextPosition(){
+        // do some stuff with trajectory to determine next position
+    }
+
+    update(){
+        this.nextPosition();
+        super.update();
+    }
+}
+
+class Weapon{
+    constructor(spread, count, cooldown, direction){
+        this.projectile = new Projectile();
+        this.spread = spread;
+        this.count = count;
+        this.cooldown = cooldown;
+        this.direction = direction;
+    }
+
+    shoot(){
+        // spawn the projectiles and fire them in the direction specified
+    }
+}
+
 class Player extends Entity{
-    constructor(x, y, vx, vy, shape, sprite, colour, angle, hitpoints){
+    constructor(x, y, vx, vy, shape, sprite, colour, angle, hitpoints, thrustMod){
         super(x, y, vx, vy, shape, sprite, colour, angle, hitpoints)
         this.travelSpeed = 0 + this.velocity.y;
         this.traveledDistance = 0;
+        this.thrustMod = thrustMod;
         this.weapon = new Weapon("default");
     }
 
-    // Player Control Stuff
-    // 
-    //
-    //
-    // 
+    // Player Control Actions
+    moveUp(){
+        this.velocity.y -= this.thrustMod;  // Remember that in higher y means lower on the 2d plane
+    }
+
+    moveDown(){
+        this.velocity.y += this.thrustMod;
+    }
+
+    moveLeft(){
+        this.velocity.x -= this.thrustMod;
+    }
+
+    moveRight(){
+        this.velocity += this.thrustMod;
+    }
 
     travel(){
         this.travelSpeed += this.velocity.y;
@@ -50,7 +94,7 @@ class Player extends Entity{
 }
 
 class Enemy extends Entity{
-    constructor(behaviour){
+    constructor(behaviour, mX, mY, atkX, atkY, weaponType){
         super();
         this.behaviour = behaviour;
         this.moveTarget = new Vector2d(mX, mY);
@@ -104,34 +148,3 @@ class Asteroid extends Entity{
     }
 }
 
-class Weapon{
-    constructor(){
-        this.projectile = projectile;
-        this.spread = spread;
-        this.count = count;
-        this.cooldown = cooldown;
-        this.direction = direction;
-    }
-
-    shoot(){
-        // spawn the projectiles and fire them in the direction specified
-    }
-}
-
-class Projectile extends Entity(){
-    constructor(damage, range, trajectory){
-        super();
-        this.damage = damage;
-        this.range = range;
-        this.trajectory = trajectory;
-    }
-
-    nextPosition(){
-        // do some stuff with trajectory to determine next position
-    }
-
-    update(){
-        this.nextPosition();
-        super();
-    }
-}
