@@ -1,8 +1,10 @@
 function drawShape(entity){
     //console.log('drawing entity');
     context.save();
-    context.translate(entity.position.x, entity.position.y);
+    context.translate(entity.position.x + (entity.width / 2), entity.position.y + (entity.height / 2));
+    context.rotate(entity.rotation);
+    context.translate(-(entity.width / 2), -(entity.height / 2));
     context.fillStyle = entity.shape.colour;
-    context.fillRect(-entity.shape.height, -entity.shape.width, entity.shape.width, entity.shape.height)
+    context.fillRect(0, 0, entity.shape.width, entity.shape.height);
     context.restore();
 }

@@ -1,11 +1,13 @@
 class Entity{
-    constructor(x, y, vx, vy, shape, sprite, colour, angle, hitpoints){
+    constructor(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints){
         this.position = new Vector2d(x, y);
         this.velocity = new Vector2d(vx, vy);
-        this.angle = angle;
+        this.rotation = rotation;
         this.shape = shape;
         this.sprite = sprite;
         // this.colour = colour;
+        this.height = height;
+        this.width = width;
         this.hitpoints = hitpoints;
     }
 
@@ -57,30 +59,38 @@ class Weapon{
 }
 
 class Player extends Entity{
-    constructor(x, y, vx, vy, shape, sprite, colour, angle, hitpoints, thrustMod){
-        super(x, y, vx, vy, shape, sprite, colour, angle, hitpoints)
+    constructor(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints, thrust){
+        super(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints)
         this.travelSpeed = 0 + this.velocity.y;
         this.traveledDistance = 0;
-        this.thrustMod = thrustMod;
+        this.thrust = thrust;
         this.weapon = new Weapon("default");
     }
 
     // Player Control Actions
     moveUp(){
-        console.log("moving player up");
-        this.velocity.y = -this.thrustMod;  // Remember that in higher y means lower on the 2d plane
+        //console.log("moving player up");
+        this.position.y -= this.thrust;  // Remember that in higher y means lower on the 2d plane
     }
 
     moveDown(){
-        this.velocity.y = this.thrustMod;
+        this.position.y += this.thrust;
     }
 
     moveLeft(){
-        this.velocity.x = -this.thrustMod;
+        this.position.x -= this.thrust;
     }
 
     moveRight(){
-        this.velocity.x = this.thrustMod;
+        this.position.x += this.thrust;
+    }
+
+    rotateRight(){
+        this.rotation += 10;
+    }
+
+    rotateLeft(){
+        this.rotation -= 10;
     }
 
     travel(){

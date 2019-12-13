@@ -10,13 +10,39 @@ const GAMEWIDTH = 1800;
 canvas.height = GAMEHEIGHT;
 canvas.width = GAMEWIDTH;
 const canvasMiddleY = canvas.height / 2;
-const canvasMiddleX = canvas.height / 2;
+const canvasMiddleX = canvas.width / 2;
 
-// Add event listener for key presses
-canvas.addEventListener('keypress', logKey);
+// Add event listener for singular  key presses
+let keys = {};
+canvas.addEventListener('keypress', registerKeyPress);
+
+// Event listener for holding down key press
+canvas.addEventListener('keydown', event => {
+	keys[event.key] = true;
+});
+
+// Event listener for letting go of a key
+canvas.addEventListener('keyup', event => {
+	keys[event.key] = false;
+});
+
+// Track Mouse Movements
+let mouseX = 0;
+let mouseY = 0;
+
+document.addEventListener("mousemove", mouseMoveHandler, false);
+function mouseMoveHandler(e){
+    let rect = canvas.getBoundingClientRect();
+    let scaleX = canvas.width / rect.width;
+    let scaleY = canvas.height / rect.height;
+
+    mouseX = Math.trunc((e.clientX - rect.left) * scaleX);
+    mouseY = Math.trunc((e.clientY - rect.top) * scaleY);
+    console.log(mouseX, mouseY);
+}
 
 // Intialization
-player = new Player(canvasMiddleX, canvasMiddleY, 0, 0, new Rectangle(100, 100, "Blue"), null, 0, 1, 1, 10);
+player = new Player(canvasMiddleX - 100, canvasMiddleY - 100, 0, 0, new Rectangle(100, 100, "Blue"), null, 0, 100, 100, 20, 15);
 let entities = [player];
 console.log(entities);
 
@@ -32,6 +58,12 @@ function main(){
     //
     //
 
+    // Point Player in Direction of Mouse
+    setShipAngle();
+
+    // Accept Regular Player Controls
+    playerControls();
+
     // Go through the entities and proceed with their actions
     for(entity of entities){
         //console.log(entity);
@@ -42,30 +74,49 @@ function main(){
     drawShape(entity);
 }
 
-function playerControls(e){
-    switch(e.code){
-        case "Space":
-            console.log(player);
-            break;
-        case "KeyW":
-            player.moveUp();
-            break;
-        case "KeyS":
-            player.moveDown();
-            break;
-        case "KeyA":
-            player.moveLeft();
-            break;
-        case "KeyD":
-            player.moveRight();
-            break;
-        
+function setShipAngle(){
+    let dx = mouseX - (player.position.x + player.width / 2);
+    let dy = mouseY - (player.position.y + player.height / 2);
+    let angle = Math.atan2(dx, dy);
+    player.rotation = -angle;
+    console.log(angle);
+}
+
+function playerControls(){
+    // Up-Down Movement
+    if(keys.w){
+        player.moveUp();
+    }
+    else if(keys.s){
+        player.moveDown();
+    }
+
+    // Horizontal Movement
+    if(keys.a){
+        player.moveLeft();
+    }
+    else if(keys.d){
+        player.moveRight();
+    }
+
+    // Testing Rotation
+    if(keys.ArrowRight){
+        player.rotateRight();
+    }
+    else if(keys.ArrowLeft){
+        player.rotateLeft();
     }
 }
 
-function logKey(e){
-    console.log(e);
-    playerControls(e);
+function playerAction(e){
+    if(e.code == "Space"){
+        console.log(player);
+    } 
+}
+
+function registerKeyPress(e){
+    //console.log(e);
+    playerAction(e);
 }
 
 main();
