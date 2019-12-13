@@ -41,7 +41,7 @@ function mouseMoveHandler(e){
 }
 
 // Intialization
-player = new Player(canvasMiddleX - 100, canvasMiddleY - 100, 0, 0, new Rectangle(100, 100, "Blue"), null, 0, 100, 100, 20, 15);
+player = new Player(canvasMiddleX - 50, canvasMiddleY - 50, 0, 0, new Rectangle(100, 100, "Blue"), null, 0, 100, 100, 20, 15);
 testEnemy = new Enemy(50, 50, 0, 0, new Rectangle(50, 50, "Red"), null, 0, 50, 50, 1, null, 800, 800, null, null, null);
 let entities = [player, testEnemy];
 console.log(entities);
@@ -54,7 +54,7 @@ function main(){
 
     // Collision Detection
     //
-    //
+    // rofllmao
     //
     //
 
@@ -86,8 +86,8 @@ function main(){
 }
 
 function setShipAngle(){
-    let dx = mouseX - (player.position.x + player.width / 2);
-    let dy = mouseY - (player.position.y + player.height / 2);
+    let dx = mouseX - player.position.x;
+    let dy = mouseY - player.position.y;
     let angle = Math.atan2(dx, dy);
     player.rotation = -angle;
 }
