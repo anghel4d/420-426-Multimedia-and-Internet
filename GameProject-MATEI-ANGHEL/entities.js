@@ -105,8 +105,8 @@ class Player extends Entity{
 }
 
 class Enemy extends Entity{
-    constructor(behaviour, mX, mY, atkX, atkY, weaponType){
-        super();
+    constructor(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints, behaviour, mX, mY, atkX, atkY, weaponType){
+        super(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints);
         this.behaviour = behaviour;
         this.moveTarget = new Vector2d(mX, mY);
         this.atkTarget = new Vector2d(atkX, atkY);
@@ -115,7 +115,19 @@ class Enemy extends Entity{
 
     turn(){
         // logic for changing move and atk targets
-        //
+        if(this.position.x < this.moveTarget.x){
+            this.position.x += 2;
+        }
+        else if(this.position.x > this.moveTarget.x){
+            this.position.x -= 2;
+        }
+
+        if(this.position.y < this.moveTarget.y){
+            this.position.y += 2;
+        }
+        else if(this.position.y > this.moveTarget.y){
+            this.position.y -= 2;
+        }
         //
         //
         //

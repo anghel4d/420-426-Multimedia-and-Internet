@@ -38,16 +38,16 @@ function mouseMoveHandler(e){
 
     mouseX = Math.trunc((e.clientX - rect.left) * scaleX);
     mouseY = Math.trunc((e.clientY - rect.top) * scaleY);
-    console.log(mouseX, mouseY);
 }
 
 // Intialization
 player = new Player(canvasMiddleX - 100, canvasMiddleY - 100, 0, 0, new Rectangle(100, 100, "Blue"), null, 0, 100, 100, 20, 15);
-let entities = [player];
+testEnemy = new Enemy(50, 50, 0, 0, new Rectangle(50, 50, "Red"), null, 0, 50, 50, 1, null, 800, 800, null, null, null);
+let entities = [player, testEnemy];
 console.log(entities);
 
 // Main Loop
-function main(){
+function main(){  
     // Clear the canvas
     requestAnimationFrame(main);
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -66,12 +66,23 @@ function main(){
 
     // Go through the entities and proceed with their actions
     for(entity of entities){
+        // AI decision making
+        if(entity instanceof Enemy){
+            entity.moveTarget.x = player.position.x;
+            entity.moveTarget.y = player.position.y;
+            //console.log(player.position.x);
+            //console.log(entity.moveTarget.x);
+            //console.log(entity);
+        }
+
         //console.log(entity);
         entity.update();
+
+        // Draw Entities to Screen
+        drawShape(entity);
     }
 
-    // Draw Entities to Screen
-    drawShape(entity);
+    
 }
 
 function setShipAngle(){
@@ -79,7 +90,6 @@ function setShipAngle(){
     let dy = mouseY - (player.position.y + player.height / 2);
     let angle = Math.atan2(dx, dy);
     player.rotation = -angle;
-    console.log(angle);
 }
 
 function playerControls(){
