@@ -42,7 +42,7 @@ function mouseMoveHandler(e){
 
 // Intialization
 player = new Player(canvasMiddleX - 50, canvasMiddleY - 50, 0, 0, new Rectangle(100, 100, "Blue"), null, 0, 100, 100, 20, 10);
-testEnemy = new Enemy(50, 50, 0, 0, new Rectangle(50, 50, "Red"), null, 0, 50, 50, 1, null, 800, 800, null, null, null);
+testEnemy = new Enemy(50, 50, 0, 0, new Rectangle(50, 50, "Red"), null, 0, 50, 50, 20, null, 800, 800, null, null, null);
 let entities = [player, testEnemy];
 console.log(entities);
 
@@ -74,7 +74,7 @@ function main(){
                 && other.position.y + other.height / 2 >= entity.position.y - entity.height / 2
                 && other.position.y  - other.height / 2 <= entity.position.y + entity.height / 2){
                     console.log("Collision between two entities: ", entity, other);
-                    entity.onHit(other);
+                    //entity.onHit(other);
                 }
             }
         }

@@ -22,6 +22,8 @@ class Entity{
     }
 
     onHit(collidedObject){
+        console.log(collidedObject);
+
         // Calculate Consequences
         if(collidedObject instanceof Projectile){
             this.hitpoints -= collidedObject.damage;
@@ -36,18 +38,7 @@ class Entity{
         }
 
         // Get The Two Entities Away from Each Other
-        if(collidedObject.position.x + collidedObject.width / 2 >= this.position.x - this.width / 2){
-            
-        }
-        else if(collidedObject.position.x - collidedObject.width / 2 <= this.position.x - this.width / 2){
-
-        }
-        if(collidedObject.position.y + collidedObject.height / 2 >= this.position.y - this.height / 2){
-
-        }
-        else if(collidedObject.position.y - collidedObject.height / 2 <= this.position.y - this.height / 2){
-
-        }
+        // Hit from the left
 
         // Play a Collision Sound
         //
@@ -153,23 +144,18 @@ class Enemy extends Entity{
     turn(){
         // logic for changing move and atk targets
         if(this.position.x < this.moveTarget.x){
-            this.position.x += 2;
+            this.velocity.x += 0.1;
         }
         else if(this.position.x > this.moveTarget.x){
-            this.position.x -= 2;
+            this.velocity.x -= 0.1;
         }
 
         if(this.position.y < this.moveTarget.y){
-            this.position.y += 2;
+            this.velocity.y += 0.1;
         }
         else if(this.position.y > this.moveTarget.y){
-            this.position.y -= 2;
+            this.velocity.y -= 0.1;
         }
-        //
-        //
-        //
-        // 
-        // 
     }
 
     update(){
