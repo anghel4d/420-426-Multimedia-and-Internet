@@ -11,6 +11,11 @@ class Vector2d{
     }
 }
 
+// RMG
+function getRandomInt(min, max){
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 // Geometry Data
 class Shape{    // has to be updated to remove redundant color tag
     constructor(colour){

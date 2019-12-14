@@ -73,7 +73,8 @@ function main(){
                 && other.position.x - other.width / 2 <= entity.position.x + entity.width / 2
                 && other.position.y + other.height / 2 >= entity.position.y - entity.height / 2
                 && other.position.y  - other.height / 2 <= entity.position.y + entity.height / 2){
-                    console.log("Collision");
+                    console.log("Collision between two entities: ", entity, other);
+                    entity.onHit(other);
                 }
             }
         }
@@ -83,6 +84,9 @@ function main(){
 
         // Draw Entities to Screen
         drawShape(entity);
+
+        // Remove Disabled Entities
+        entities = entities.filter(entity => entity.isEnabled);
     }
 
     

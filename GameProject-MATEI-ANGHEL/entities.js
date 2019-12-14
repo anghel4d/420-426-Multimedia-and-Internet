@@ -9,6 +9,12 @@ class Entity{
         this.height = height;
         this.width = width;
         this.hitpoints = hitpoints;
+        this.isEnabled = true;
+    }
+
+    destructor(){
+        console.log("An Entity has been marked for Removal");
+        this.isEnabled = false;
     }
 
     move(){
@@ -16,13 +22,44 @@ class Entity{
     }
 
     onHit(collidedObject){
-        if(typeof collidedObject == Projectile || typeof collidedObject == Asteroid){
+        // Calculate Consequences
+        if(collidedObject instanceof Projectile){
             this.hitpoints -= collidedObject.damage;
+            collidedObject.hitpoints -= 1;
         }
+        else if(collidedObject instanceof Enemy){
+            this.hitpoints = Math.trunc(this.hitpoints / 2);
+            collidedObject.hitpoints = Math.trunc(collidedObject.hitpoints / 2);
+        }
+        else if(collidedObject instanceof Asteroid){
+            this.hitpoints -= Math.trunc(collidedObject.mass / 10);
+        }
+
+        // Get The Two Entities Away from Each Other
+        if(collidedObject.position.x + collidedObject.width / 2 >= this.position.x - this.width / 2){
+            
+        }
+        else if(collidedObject.position.x - collidedObject.width / 2 <= this.position.x - this.width / 2){
+
+        }
+        if(collidedObject.position.y + collidedObject.height / 2 >= this.position.y - this.height / 2){
+
+        }
+        else if(collidedObject.position.y - collidedObject.height / 2 <= this.position.y - this.height / 2){
+
+        }
+
+        // Play a Collision Sound
+        //
+        //
+        //
     }
 
     update(){
         this.move();
+        if(this.hitpoints <= 0){
+            this.destructor();
+        }
     }
 }
 
@@ -163,6 +200,11 @@ class Boss extends Enemy{
 }
 
 class Asteroid extends Entity{
+    constructor(){
+        this.mass = getRandomInt(100, 500);
+        this.spawn();
+    }
+
     spawn(){
         // Give it some coords and some movement
         //
