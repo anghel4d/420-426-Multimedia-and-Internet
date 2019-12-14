@@ -17,6 +17,7 @@ class Entity{
         this.isEnabled = false;
     }
 
+    // Currently only in use by asteroids, as player and enemy movements are linear
     move(){
         this.position.add(this.velocity);
     }
@@ -25,6 +26,7 @@ class Entity{
         console.log(collidedObject);
 
         // Calculate Consequences
+        /*
         if(collidedObject instanceof Projectile){
             this.hitpoints -= collidedObject.damage;
             collidedObject.hitpoints -= 1;
@@ -36,9 +38,14 @@ class Entity{
         else if(collidedObject instanceof Asteroid){
             this.hitpoints -= Math.trunc(collidedObject.mass / 10);
         }
+        */
 
         // Get The Two Entities Away from Each Other
-        // Hit from the left
+        if(!(collidedObject instanceof Projectile)){
+            console.log("huh");
+            collidedObject.position.x -= 15 * collidedObject.velocity.x;
+            collidedObject.position.y -= 15 * collidedObject.velocity.y;
+        }
 
         // Play a Collision Sound
         //
@@ -87,30 +94,29 @@ class Weapon{
 }
 
 class Player extends Entity{
-    constructor(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints, thrust){
+    constructor(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints, thrustMod){
         super(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints)
         this.travelSpeed = 0 + this.velocity.y;
         this.traveledDistance = 0;
-        this.thrust = thrust;
+        this.thrustMod = thrustMod;
         this.weapon = new Weapon("default");
     }
 
     // Player Control Actions
     moveUp(){
-        //console.log("moving player up");
-        this.position.y -= this.thrust;  // Remember that in higher y means lower on the 2d plane
+        this.velocity.y -= 10 * this.thrustMod;
     }
 
     moveDown(){
-        this.position.y += this.thrust;
+        this.velocity.y += 10 * this.thrustMod;
     }
 
     moveLeft(){
-        this.position.x -= this.thrust;
+        this.velocity.x -= 10 * this.thrustMod;
     }
 
     moveRight(){
-        this.position.x += this.thrust;
+        this.velocity.x += 10 * this.thrustMod;
     }
 
     rotateRight(){
@@ -129,6 +135,8 @@ class Player extends Entity{
     update(){
         super.update();
         this.travel();
+        this.velocity.x *= 0.5;
+        this.velocity.y *= 0.5;
     }
 }
 
@@ -144,23 +152,25 @@ class Enemy extends Entity{
     turn(){
         // logic for changing move and atk targets
         if(this.position.x < this.moveTarget.x){
-            this.velocity.x += 0.1;
+            this.velocity.x += 10;
         }
         else if(this.position.x > this.moveTarget.x){
-            this.velocity.x -= 0.1;
+            this.velocity.x -= 10;
         }
 
         if(this.position.y < this.moveTarget.y){
-            this.velocity.y += 0.1;
+            this.velocity.y += 10;
         }
         else if(this.position.y > this.moveTarget.y){
-            this.velocity.y -= 0.1;
+            this.velocity.y -= 10;
         }
     }
 
     update(){
         this.turn();
         super.update();
+        this.velocity.x = 0;
+        this.velocity.y = 0;
     }
 }
 
