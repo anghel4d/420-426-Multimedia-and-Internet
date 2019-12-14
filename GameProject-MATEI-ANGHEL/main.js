@@ -41,7 +41,7 @@ function mouseMoveHandler(e){
 }
 
 // Intialization
-player = new Player(canvasMiddleX - 50, canvasMiddleY - 50, 0, 0, new Rectangle(100, 100, "Blue"), null, 0, 100, 100, 20, 15);
+player = new Player(canvasMiddleX - 50, canvasMiddleY - 50, 0, 0, new Rectangle(100, 100, "Blue"), null, 0, 100, 100, 20, 10);
 testEnemy = new Enemy(50, 50, 0, 0, new Rectangle(50, 50, "Red"), null, 0, 50, 50, 1, null, 800, 800, null, null, null);
 let entities = [player, testEnemy];
 console.log(entities);
@@ -51,12 +51,6 @@ function main(){
     // Clear the canvas
     requestAnimationFrame(main);
     context.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Collision Detection
-    //
-    // rofllmao
-    //
-    //
 
     // Point Player in Direction of Mouse
     setShipAngle();
@@ -70,12 +64,21 @@ function main(){
         if(entity instanceof Enemy){
             entity.moveTarget.x = player.position.x;
             entity.moveTarget.y = player.position.y;
-            //console.log(player.position.x);
-            //console.log(entity.moveTarget.x);
-            //console.log(entity);
         }
 
-        //console.log(entity);
+        // Collision Detection
+        for(other of entities){
+            if(other != entity){
+                if(other.position.x + other.width / 2 >= entity.position.x - entity.width / 2
+                && other.position.x - other.width / 2 <= entity.position.x + entity.width / 2
+                && other.position.y + other.height / 2 >= entity.position.y - entity.height / 2
+                && other.position.y  - other.height / 2 <= entity.position.y + entity.height / 2){
+                    console.log("Collision");
+                }
+            }
+        }
+
+        // Update Entity States
         entity.update();
 
         // Draw Entities to Screen
