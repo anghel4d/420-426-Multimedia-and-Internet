@@ -9,6 +9,7 @@ class Entity{
         this.height = height;
         this.width = width;
         this.hitpoints = hitpoints;
+        this.isCollideable = true;
         this.isEnabled = true;
     }
 
@@ -22,32 +23,32 @@ class Entity{
     }
 
     onHit(collidedObject){
-        console.log(collidedObject);
-
-        // Calculate Consequences
-        if(collidedObject instanceof Projectile){
-            this.hitpoints -= collidedObject.damage;
-            collidedObject.hitpoints -= 1;
+        if(this.isCollideable){
+            console.log(collidedObject);
+            // Calculate Consequences
+            if(collidedObject instanceof Projectile){
+                this.hitpoints -= collidedObject.damage;
+                collidedObject.hitpoints -= 1;
+            }
+            else if(collidedObject instanceof Enemy){
+                this.hitpoints = Math.trunc(this.hitpoints / 2);
+                collidedObject.hitpoints = Math.trunc(collidedObject.hitpoints / 2);
+            }
+            else if(collidedObject instanceof Asteroid){
+                this.hitpoints -= Math.trunc(collidedObject.mass / 10);
+            }
+            this.isCollideable = false;
+            setTimeout( () => {
+                this.enableCollision()
+            }, 1000);
         }
-        else if(collidedObject instanceof Enemy){
-            this.hitpoints = Math.trunc(this.hitpoints / 2);
-            collidedObject.hitpoints = Math.trunc(collidedObject.hitpoints / 2);
-        }
-        else if(collidedObject instanceof Asteroid){
-            this.hitpoints -= Math.trunc(collidedObject.mass / 10);
-        }
+    }
 
-        // Get The Two Entities Away from Each Other
-        // Hit from the left
-
-        // Play a Collision Sound
-        //
-        //
-        //
+    enableCollision(){
+        this.isCollideable = true;
     }
 
     update(){
-        this.move();
         if(this.hitpoints <= 0){
             this.destructor();
         }
@@ -55,62 +56,67 @@ class Entity{
 }
 
 class Projectile extends Entity{
-    constructor(damage, range, trajectory){
-        super();
+    constructor(x, y, vx, vy, damage, range){
+        super(x, y, vx, vy, new Rectangle(10, 10, "Pink"), null, 1, 10, 10, 1);
         this.damage = damage;
         this.range = range;
-        this.trajectory = trajectory;
-    }
-
-    nextPosition(){
-        // do some stuff with trajectory to determine next position
     }
 
     update(){
-        this.nextPosition();
         super.update();
+        this.position.x += this.velocity.x;
+        this.position.y += this.velocity.y;
     }
 }
 
 class Weapon{
-    constructor(spread, count, cooldown, direction){
+    constructor(spread, count, cooldown, origin, direction, velocity){
         this.projectile = new Projectile();
         this.spread = spread;
         this.count = count;
         this.cooldown = cooldown;
+        this.origin = origin;
         this.direction = direction;
+        this.velocity = velocity;
     }
 
     shoot(){
         // spawn the projectiles and fire them in the direction specified
+        console.log(entities);
+        console.log(this.direction);
+        let headingVector = new Vector2d(Math.sin(this.direction), Math.cos(this.direction));
+        console.log(headingVector);
+        let temp = [new Projectile(this.origin.x, this.origin.y, this.velocity * headingVector.x, this.velocity * headingVector.y,
+            20, null )];
+        entities = entities.concat(temp);
     }
 }
 
 class Player extends Entity{
-    constructor(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints, thrust){
+    constructor(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints, baseSpeed, thrustMod){
         super(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints)
         this.travelSpeed = 0 + this.velocity.y;
         this.traveledDistance = 0;
-        this.thrust = thrust;
-        this.weapon = new Weapon("default");
+        this.baseSpeed = baseSpeed;
+        this.thrustMod = thrustMod;
+        this.weapon = new Weapon(0, 1, 1, new Vector2d(this.position.x, this.position.y), this.rotation, 20);
     }
 
     // Player Control Actions
     moveUp(){
-        //console.log("moving player up");
-        this.position.y -= this.thrust;  // Remember that in higher y means lower on the 2d plane
+        this.position.y -= this.baseSpeed * this.thrustMod;
     }
 
     moveDown(){
-        this.position.y += this.thrust;
+        this.position.y += this.baseSpeed * this.thrustMod;
     }
 
     moveLeft(){
-        this.position.x -= this.thrust;
+        this.position.x -= this.baseSpeed * this.thrustMod;
     }
 
     moveRight(){
-        this.position.x += this.thrust;
+        this.position.x += this.baseSpeed * this.thrustMod;
     }
 
     rotateRight(){
@@ -121,12 +127,37 @@ class Player extends Entity{
         this.rotation -= 10;
     }
 
+    shoot(){
+        this.weapon.direction = this.rotation;
+        let l = this.height / 2 + 30;
+        let wepX = this.position.x + l * Math.sin(this.rotation);
+        let wepY = this.position.y + l * Math.cos(this.rotation);
+        console.log(l, this.rotation, wepX, wepY);
+        this.weapon.origin = new Vector2d(wepX, wepY);
+        this.weapon.shoot();
+    }
+
+    enforceBounds(){
+        if(this.position.x - this.width / 2 <= 0){
+            this.position.x = 0 + this.width / 2;
+        }
+        if(this.position.x + this.width / 2 >= canvas.width){
+            this.position.x = canvas.width - this.width / 2;
+        }
+        if(this.position.y - this.height / 2 <= 0){
+            this.position.y = 0 + this.height / 2;
+        }
+        if(this.position.y + this.height / 2 >= canvas.height){
+            this.position.y = canvas.height - this.height / 2;
+        }
+    }
+
     travel(){
-        this.travelSpeed += this.velocity.y;
         this.traveledDistance += this.travelSpeed;
     }
 
     update(){
+        this.enforceBounds();
         super.update();
         this.travel();
     }
@@ -144,17 +175,17 @@ class Enemy extends Entity{
     turn(){
         // logic for changing move and atk targets
         if(this.position.x < this.moveTarget.x){
-            this.velocity.x += 0.1;
+            this.position.x += 5;
         }
         else if(this.position.x > this.moveTarget.x){
-            this.velocity.x -= 0.1;
+            this.position.x -= 5;
         }
 
         if(this.position.y < this.moveTarget.y){
-            this.velocity.y += 0.1;
+            this.position.y += 5;
         }
         else if(this.position.y > this.moveTarget.y){
-            this.velocity.y -= 0.1;
+            this.position.y -= 5;
         }
     }
 

@@ -16,6 +16,9 @@ const canvasMiddleX = canvas.width / 2;
 let keys = {};
 canvas.addEventListener('keypress', registerKeyPress);
 
+// Event listener for hitting mouse1
+canvas.addEventListener('click', registerMouseClick);
+
 // Event listener for holding down key press
 canvas.addEventListener('keydown', event => {
 	keys[event.key] = true;
@@ -41,9 +44,12 @@ function mouseMoveHandler(e){
 }
 
 // Intialization
-player = new Player(canvasMiddleX - 50, canvasMiddleY - 50, 0, 0, new Rectangle(100, 100, "Blue"), null, 0, 100, 100, 20, 10);
-testEnemy = new Enemy(50, 50, 0, 0, new Rectangle(50, 50, "Red"), null, 0, 50, 50, 20, null, 800, 800, null, null, null);
-let entities = [player, testEnemy];
+player = new Player(canvasMiddleX - 50, canvasMiddleY - 50, 0, 0, new Rectangle(100, 100, "Blue"), null, 0, 100, 100, 50, 10, 1);
+
+/* testEnemy = new Enemy(50, 50, 0, 0, new Rectangle(50, 50, "Red"), null, 0, 50, 50, 20, null, 800, 800, null, null, null);
+testEnemy2 = new Enemy(300, 300, 0, 0, new Rectangle(50, 50, "Purple"), null, 0, 50, 50, 20, null, 800, 800, null, null, null);
+let entities = [player, testEnemy, testEnemy2]; */
+let entities = [player];
 console.log(entities);
 
 // Main Loop
@@ -54,14 +60,13 @@ function main(){
 
     // Point Player in Direction of Mouse
     setShipAngle();
-
     // Accept Regular Player Controls
     playerControls();
 
     // Go through the entities and proceed with their actions
     for(entity of entities){
         // AI decision making
-        if(entity instanceof Enemy){
+        if((entity instanceof Enemy) && player.isEnabled){
             entity.moveTarget.x = player.position.x;
             entity.moveTarget.y = player.position.y;
         }
@@ -73,8 +78,8 @@ function main(){
                 && other.position.x - other.width / 2 <= entity.position.x + entity.width / 2
                 && other.position.y + other.height / 2 >= entity.position.y - entity.height / 2
                 && other.position.y  - other.height / 2 <= entity.position.y + entity.height / 2){
-                    console.log("Collision between two entities: ", entity, other);
-                    //entity.onHit(other);
+                    //console.log("Collision between two entities: ", entity, other);
+                    entity.onHit(other);
                 }
             }
         }
@@ -88,15 +93,13 @@ function main(){
         // Remove Disabled Entities
         entities = entities.filter(entity => entity.isEnabled);
     }
-
-    
 }
 
 function setShipAngle(){
     let dx = mouseX - player.position.x;
     let dy = mouseY - player.position.y;
     let angle = Math.atan2(dx, dy);
-    player.rotation = -angle;
+    player.rotation = angle;
 }
 
 function playerControls(){
@@ -131,9 +134,18 @@ function playerAction(e){
     } 
 }
 
+function playerShoot(){
+    player.shoot();
+}
+
 function registerKeyPress(e){
     //console.log(e);
     playerAction(e);
+}
+
+function registerMouseClick(e){
+    console.log(e);
+    playerShoot();
 }
 
 main();
