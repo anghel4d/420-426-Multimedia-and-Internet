@@ -34,7 +34,7 @@ class Entity{
                 this.hitpoints = Math.trunc(this.hitpoints / 2);
                 collidedObject.hitpoints = Math.trunc(collidedObject.hitpoints / 2);
             }
-            else if(collidedObject instanceof Asteroid){
+            else if(collidedObject instanceof Asteroid && !(this instanceof Asteroid)){
                 this.hitpoints -= Math.trunc(collidedObject.mass / 10);
             }
             this.isCollideable = false;
@@ -62,10 +62,20 @@ class Projectile extends Entity{
         this.range = range;
     }
 
+    enforceBounds(){
+        if(this.position.x < 0
+        || this.position.x > canvas.width
+        || this.position.y < 0
+        || this.position.y > canvas.height){
+            this.isEnabled = false;
+        } 
+    }
+
     update(){
         super.update();
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
+        this.enforceBounds();
     }
 }
 
@@ -195,38 +205,38 @@ class Enemy extends Entity{
     }
 }
 
-class Boss extends Enemy{
-    constructor(shieldHealth, mana){
-        super();
-        this.shieldHealth = shieldHealth;
-        this.mana = mana;
-    }
-    
-    turn(){
-        // boss logic
-        //
-        //
-        //
-        //
-        //
-    }
-
-    spawnEnemy(){
-        // Make an enemy come out at the expense of mana
-    }
-}
-
 class Asteroid extends Entity{
     constructor(){
+        super();
         this.mass = getRandomInt(100, 500);
         this.spawn();
     }
 
     spawn(){
         // Give it some coords and some movement
-        //
-        //
-        //
+        let xSize = Math.trunc(this.mass / 2 + getRandomInt(-50, 100));
+        let ySize = Math.trunc(this.mass / 2 + getRandomInt(-50, 100));
+        this.width = xSize;
+        this.height = ySize;
+        this.position.x = getRandomInt(0, canvas.width);
+        this.position.y = getRandomInt(-canvas.height, -this.height);
+        this.velocity.x = 0;
+        this.velocity.y = getRandomInt(5, 15);
+        this.shape = new Rectangle(xSize, ySize, "purple");
+        this.hitpoints = Math.trunc(this.mass / 10);
+    }
+
+    enforceBounds(){
+        if(this.position.y > canvas.height){
+            this.isEnabled = false;
+        } 
+    }
+
+    update(){
+        super.update();
+        this.position.x += this.velocity.x;
+        this.position.y += this.velocity.y;
+        this.enforceBounds();
     }
 }
 

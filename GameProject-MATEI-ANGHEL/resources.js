@@ -11,6 +11,17 @@ class Vector2d{
     }
 }
 
+// Time Calclation
+class GameTimer{
+    constructor(){
+        this.elapsed = 0;
+    }
+
+    update(){
+        this.elapsed++;
+    }
+}
+
 // RMG
 function getRandomInt(min, max){
     return Math.floor(Math.random() * (max - min + 1) + min);

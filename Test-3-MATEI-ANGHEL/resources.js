@@ -20,7 +20,7 @@ class GameTimer{
     }
 
     getTime(){
-        return Math.floor(this.elapsed / 60);
+        return Math.floor(this.elapsed);
     }
 
     printTime(){

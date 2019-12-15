@@ -44,13 +44,19 @@ function mouseMoveHandler(e){
 }
 
 // Intialization
-player = new Player(canvasMiddleX - 50, canvasMiddleY - 50, 0, 0, new Rectangle(100, 100, "Blue"), null, 0, 100, 100, 50, 10, 1);
-
+let player = new Player(canvasMiddleX - 50, canvasMiddleY - 50, 0, 0, new Rectangle(100, 100, "Blue"), null, 0, 100, 100, 50, 10, 1);
+let testAsteroid = new Asteroid();
 /* testEnemy = new Enemy(50, 50, 0, 0, new Rectangle(50, 50, "Red"), null, 0, 50, 50, 20, null, 800, 800, null, null, null);
 testEnemy2 = new Enemy(300, 300, 0, 0, new Rectangle(50, 50, "Purple"), null, 0, 50, 50, 20, null, 800, 800, null, null, null);
 let entities = [player, testEnemy, testEnemy2]; */
-let entities = [player];
+let entities = [player, testAsteroid];
 console.log(entities);
+
+const NUMASTEROIDS = 5;
+
+// Game Tick Timer
+let timer = new GameTimer();
+let isSecondTick = timer.elapsed % 60 == 0;
 
 // Main Loop
 function main(){  
@@ -58,10 +64,21 @@ function main(){
     requestAnimationFrame(main);
     context.clearRect(0, 0, canvas.width, canvas.height);
 
+    // Update Timer
+    timer.update();
+    isSecondTick = timer.elapsed % 60 == 0;
+
     // Point Player in Direction of Mouse
     setShipAngle();
     // Accept Regular Player Controls
     playerControls();
+
+    // Spawn wave of asteroids
+    if(isSecondTick){
+        for(let i = 0; i < NUMASTEROIDS; i++){
+            entities.push(new Asteroid());
+        }
+    }
 
     // Go through the entities and proceed with their actions
     for(entity of entities){
@@ -130,7 +147,7 @@ function playerControls(){
 
 function playerAction(e){
     if(e.code == "Space"){
-        console.log(player);
+        console.log(entities);
     } 
 }
 
