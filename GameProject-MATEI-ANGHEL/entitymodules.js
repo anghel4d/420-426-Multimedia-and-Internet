@@ -1,65 +1,11 @@
-class Entity{
-    constructor(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints){
-        this.position = new Vector2d(x, y);
-        this.velocity = new Vector2d(vx, vy);
-        this.rotation = rotation;
-        this.shape = shape;
-        this.sprite = sprite;
-        // this.colour = colour;
-        this.height = height;
-        this.width = width;
-        this.hitpoints = hitpoints;
-        this.isCollideable = true;
-        this.isEnabled = true;
-    }
-
-    destructor(){
-        console.log("An Entity has been marked for Removal");
-        this.isEnabled = false;
-    }
-
-    move(){
-        this.position.add(this.velocity);
-    }
-
-    onHit(collidedObject){
-        if(this.isCollideable){
-            console.log(collidedObject);
-            // Calculate Consequences
-            if(collidedObject instanceof Projectile){
-                this.hitpoints -= collidedObject.damage;
-                collidedObject.hitpoints -= 1;
-            }
-            else if(collidedObject instanceof Enemy){
-                this.hitpoints = Math.trunc(this.hitpoints / 2);
-                collidedObject.hitpoints = Math.trunc(collidedObject.hitpoints / 2);
-            }
-            else if(collidedObject instanceof Asteroid && !(this instanceof Asteroid)){
-                this.hitpoints -= Math.trunc(collidedObject.mass / 10);
-            }
-            this.isCollideable = false;
-            setTimeout( () => {
-                this.enableCollision()
-            }, 1000);
-        }
-    }
-
-    enableCollision(){
-        this.isCollideable = true;
-    }
-
-    update(){
-        if(this.hitpoints <= 0){
-            this.destructor();
-        }
-    }
-}
-
 class Projectile extends Entity{
-    constructor(x, y, vx, vy, damage, range){
-        super(x, y, vx, vy, new Rectangle(10, 10, "Pink"), null, 1, 10, 10, 1);
+    constructor(x, y, vx, vy, damage){
+        super(x, y, vx, vy, new Rectangle(PROJECTILESIZE, PROJECTILESIZE, "Pink"), null, 0, PROJECTILESIZE, PROJECTILESIZE, 1);
         this.damage = damage;
-        this.range = range;
+        this.isCollideable = false;
+        setTimeout( () => {
+            this.enableCollision()
+        }, PROJECTILEDELAY);
     }
 
     enforceBounds(){
@@ -92,12 +38,12 @@ class Weapon{
 
     shoot(){
         // spawn the projectiles and fire them in the direction specified
-        console.log(entities);
-        console.log(this.direction);
-        let headingVector = new Vector2d(Math.sin(this.direction), Math.cos(this.direction));
-        console.log(headingVector);
-        let temp = [new Projectile(this.origin.x, this.origin.y, this.velocity * headingVector.x, this.velocity * headingVector.y,
-            20, null )];
+        let temp = [];
+        for(let i = 0; i < this.count; i++){
+            let headingVector = new Vector2d(Math.sin(this.direction), Math.cos(this.direction));
+            headingVector + getRandomDouble(-this.spread / 2, this.spread / 2);
+            temp.push(new Projectile(this.origin.x, this.origin.y, this.velocity * headingVector.x, this.velocity * headingVector.y, this.damage));
+        }
         entities = entities.concat(temp);
     }
 }
@@ -105,11 +51,11 @@ class Weapon{
 class Player extends Entity{
     constructor(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints, baseSpeed, thrustMod){
         super(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints)
-        this.travelSpeed = 0 + this.velocity.y;
+        this.travelSpeed = 0;
         this.traveledDistance = 0;
         this.baseSpeed = baseSpeed;
         this.thrustMod = thrustMod;
-        this.weapon = new Weapon(0, 1, 1, new Vector2d(this.position.x, this.position.y), this.rotation, 20);
+        this.weapon = new Weapon(0, 1, 1, new Vector2d(this.position.x, this.position.y), this.rotation, PLAYERBASEDAMAGE);
     }
 
     // Player Control Actions
@@ -139,7 +85,7 @@ class Player extends Entity{
 
     shoot(){
         this.weapon.direction = this.rotation;
-        let l = this.height / 2 + 30;
+        let l = this.height / 2 + PROJECTILEOFFSET;
         let wepX = this.position.x + l * Math.sin(this.rotation);
         let wepY = this.position.y + l * Math.cos(this.rotation);
         console.log(l, this.rotation, wepX, wepY);
@@ -239,4 +185,3 @@ class Asteroid extends Entity{
         this.enforceBounds();
     }
 }
-

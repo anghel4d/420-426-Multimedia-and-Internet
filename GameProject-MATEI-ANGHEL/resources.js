@@ -24,7 +24,16 @@ class GameTimer{
 
 // RMG
 function getRandomInt(min, max){
+    if(min === 0 && max === 0){
+        return 0;
+    }
     return Math.floor(Math.random() * (max - min + 1) + min);
+}
+function getRandomDouble(min, max){
+    if(min === 0 && max === 0){
+        return 0;
+    }
+    return (Math.random() * (max - min + 1) + min);
 }
 
 // Geometry Data
