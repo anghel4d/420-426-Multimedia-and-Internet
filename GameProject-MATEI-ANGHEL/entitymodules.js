@@ -1,6 +1,6 @@
 class Projectile extends Entity{
     constructor(x, y, vx, vy, damage){
-        super(x, y, vx, vy, new Rectangle(PROJECTILESIZE, PROJECTILESIZE, "Pink"), null, 0, PROJECTILESIZE, PROJECTILESIZE, 1);
+        super(x, y, vx, vy, new Rectangle(PROJECTILESIZE, PROJECTILESIZE, PROJECTILECOLOR), null, 0, PROJECTILESIZE, PROJECTILESIZE, 1);
         this.damage = damage;
         this.isCollideable = false;
         setTimeout( () => {
@@ -26,14 +26,20 @@ class Projectile extends Entity{
 }
 
 class Weapon{
-    constructor(spread, count, cooldown, origin, direction, velocity){
+    constructor(spread, count, cooldown, damage, origin, direction, velocity){
         this.projectile = new Projectile();
         this.spread = spread;
         this.count = count;
+        this.damage = damage;
         this.cooldown = cooldown;
         this.origin = origin;
         this.direction = direction;
         this.velocity = velocity;
+        this.canShoot = true;
+    }
+
+    reload(){
+        this.canShoot = true;
     }
 
     shoot(){
@@ -45,6 +51,10 @@ class Weapon{
             temp.push(new Projectile(this.origin.x, this.origin.y, this.velocity * headingVector.x, this.velocity * headingVector.y, this.damage));
         }
         entities = entities.concat(temp);
+        this.canShoot = false;
+        setTimeout( () => {
+            this.reload()
+        }, this.cooldown);
     }
 }
 
@@ -55,7 +65,8 @@ class Player extends Entity{
         this.traveledDistance = 0;
         this.baseSpeed = baseSpeed;
         this.thrustMod = thrustMod;
-        this.weapon = new Weapon(0, 1, 1, new Vector2d(this.position.x, this.position.y), this.rotation, PLAYERBASEDAMAGE);
+        // spread, count, cooldown, damage, origin, direction, velocity
+        this.weapon = new Weapon(0, 1, 1, PLAYERBASEDAMAGE, new Vector2d(this.position.x, this.position.y), this.rotation, PROJECTILESPEED);
     }
 
     // Player Control Actions
@@ -88,7 +99,6 @@ class Player extends Entity{
         let l = this.height / 2 + PROJECTILEOFFSET;
         let wepX = this.position.x + l * Math.sin(this.rotation);
         let wepY = this.position.y + l * Math.cos(this.rotation);
-        console.log(l, this.rotation, wepX, wepY);
         this.weapon.origin = new Vector2d(wepX, wepY);
         this.weapon.shoot();
     }
@@ -169,7 +179,8 @@ class Asteroid extends Entity{
         this.velocity.x = 0;
         this.velocity.y = getRandomInt(5, 15);
         this.shape = new Rectangle(xSize, ySize, "purple");
-        this.hitpoints = Math.trunc(this.mass / 10);
+        this.hitpoints = Math.floor(this.mass / 10);
+        console.log("Hitpoints: ", this.hitpoints);
     }
 
     enforceBounds(){

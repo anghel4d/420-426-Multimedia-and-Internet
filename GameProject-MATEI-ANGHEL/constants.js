@@ -34,7 +34,6 @@ const PROJECTILECOLOR = "White";
 
 // Cooldowns (Values in ms)
 const COLLISIONCOOLDOWN = 1000;
-const WEAPONCOOLDOWN = 1500;
 
 // TIMING
 const TICKLENGTH = 60;
