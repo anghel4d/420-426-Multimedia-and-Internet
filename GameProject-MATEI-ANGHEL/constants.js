@@ -2,23 +2,22 @@
 // =================================================== //
 
 // Player Variables
-const PLAYERMAXHP = 100;
+const PLAYERMAXHP = 1000;
 const PLAYERBOXSIZE = 100;
 const PLAYERCOLOR = "Blue";
 const PLAYERSPEED = 10;
 const PLAYERSPEEDMOD = 1;
-const PLAYERBASEDAMAGE = 10;
-const PLAYERBASECOOLDOWN = 800;
+const PLAYERBASEDAMAGE = 50;
+const PLAYERBASECOOLDOWN = 200;
 const PLAYERTRAVELSPEED = 10;
 
 // Enemy Variables
-const NUMENEMIES = 10;
-const NUMENEMYWAVES = 3;
 const ENEMYMINSIZE = 10;
 const ENEMYMAXSIZE = 50;
 const ENEMYMAXHP = 20;
 const ENEMYCOLOUR = "Red";
-const ENEMYSPEED = 8;
+const ENEMYSPEED = 4;
+const NUMALIENS = 2;
 const ENEMYBASEDAMAGE = 10;
 const ENEMYWEPDELAY = 1000;
 const ENEMYMOVECYCLE = 10000;
@@ -32,7 +31,7 @@ const ASTEROIDCOLOUR = "Purple";
 
 // Projectiles
 const PROJECTILESIZE = 10;
-const PROJECTILEDELAY = 200;
+const PROJECTILEDELAY = 50;
 const PROJECTILESPEED = 20;
 const PROJECTILEOFFSET = 30;
 const PROJECTILECOLOR = "White";

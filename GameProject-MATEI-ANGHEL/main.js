@@ -11,12 +11,8 @@ let timer = new GameTimer();
 let isFullTick = timer.elapsed % TICKLENGTH == 0;
 
 // Game states switch
-let states = Object.freeze({"startMenu":1, "aliens":2, "asteroids":3, "loss":4, "win":5})
-let state = states.startMenu;
-
-// Trackers
-let alienWavesLeft = NUMENEMYWAVES;
-let aliensLeft = 0;
+let states = Object.freeze({"active":1, "loss":2, "win":3})
+let state = states.active;
 
 startMenu();
 
@@ -36,23 +32,13 @@ function main(){
     playerControls();
 
     switch(state){
-        case states.aliens:
-            // Spawn some aliens
-            if(timer.elapsed % (TICKLENGTH * 10) == 0 && alienWavesLeft > 0){
-                for(let i = 0; i < NUMENEMYWAVES; i++){
-                    entities.push(new Enemy());
-                    aliensLeft++;
-                }
-                if(aliensLeft <= 0){
-                    state = states.asteroids;
-                }
-            }
-            break;
-        case states.asteroids:
-            // Spawn wave of asteroids
+        case states.active:
             if(isFullTick){
                 for(let i = 0; i < NUMASTEROIDS; i++){
                     entities.push(new Asteroid());
+                }
+                for(let j = 0; j < NUMALIENS; j++){
+                    entities.push(new Enemy());
                 }
             }
             // Check if win
@@ -93,11 +79,14 @@ function main(){
             drawHealth(entity);
             printStats(entity);
         }
-
-
     }
     // Remove Disabled Entities
     entities = entities.filter(entity => entity.isEnabled);
+
+    // Check for player status
+    if(!player.isEnabled){
+        state = states.loss;
+    }
 }
 
 main();
