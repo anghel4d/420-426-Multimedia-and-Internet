@@ -38,6 +38,7 @@ function playerAction(e){
 }
 
 function playerShoot(){
+    epicMusic.cloneNode(true).play();;
     player.shoot();
 }
 

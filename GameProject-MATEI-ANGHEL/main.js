@@ -14,8 +14,6 @@ let isFullTick = timer.elapsed % TICKLENGTH == 0;
 let states = Object.freeze({"active":1, "loss":2, "win":3})
 let state = states.active;
 
-startMenu();
-
 // Main Loop
 function main(){  
     // Clear the canvas

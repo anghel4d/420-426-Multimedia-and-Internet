@@ -42,3 +42,7 @@ function mouseMoveHandler(e){
     mousePos.x = Math.trunc((e.clientX - rect.left) * scaleX);
     mousePos.y = Math.trunc((e.clientY - rect.top) * scaleY);
 }
+
+// musiiiic
+const epicMusic = new Audio("data/music/guillotine.mp3");
+epicMusic.loop = true;
