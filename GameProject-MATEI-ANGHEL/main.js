@@ -1,14 +1,24 @@
 console.log("[Initialized Main]");
 
 // Intialization
-let player = new Player(canvasMiddleX - 50, canvasMiddleY - 50, 0, 0, new Rectangle(100, 100, "Blue"), null, 0, 100, 100, 50, 10, 1);
-let testAsteroid = new Asteroid();
-let entities = [player, testAsteroid];
-console.log(entities);
+let player = new Player(canvasMiddleX - PLAYERBOXSIZE / 2, canvasMiddleY - PLAYERBOXSIZE / 2, 0, 0, 
+    new Rectangle(PLAYERBOXSIZE, PLAYERBOXSIZE, PLAYERCOLOR), 
+    null, 0, PLAYERBOXSIZE, PLAYERBOXSIZE, PLAYERMAXHP, PLAYERSPEED, PLAYERSPEEDMOD, PLAYERTRAVELSPEED);
+let entities = [player, new Enemy(), new Enemy()];
 
 // Game Tick Timer
 let timer = new GameTimer();
-let isFullTick = timer.elapsed % 60 == 0;
+let isFullTick = timer.elapsed % TICKLENGTH == 0;
+
+// Game states switch
+let states = Object.freeze({"startMenu":1, "aliens":2, "asteroids":3, "loss":4, "win":5})
+let state = states.startMenu;
+
+// Trackers
+let alienWavesLeft = NUMENEMYWAVES;
+let aliensLeft = 0;
+
+startMenu();
 
 // Main Loop
 function main(){  
@@ -18,28 +28,47 @@ function main(){
 
     // Update Timer
     timer.update();
-    isFullTick = timer.elapsed % 60 == 0;
+    isFullTick = timer.elapsed % TICKLENGTH == 0;
 
     // Point Player in Direction of Mouse
-    setShipAngle();
+    setShipAngle(player, mousePos);
     // Accept Regular Player Controls
     playerControls();
 
-    // Spawn wave of asteroids
-    if(isFullTick){
-        for(let i = 0; i < NUMASTEROIDS; i++){
-            //entities.push(new Asteroid());
-        }
+    switch(state){
+        case states.aliens:
+            // Spawn some aliens
+            if(timer.elapsed % (TICKLENGTH * 10) == 0 && alienWavesLeft > 0){
+                for(let i = 0; i < NUMENEMYWAVES; i++){
+                    entities.push(new Enemy());
+                    aliensLeft++;
+                }
+                if(aliensLeft <= 0){
+                    state = states.asteroids;
+                }
+            }
+            break;
+        case states.asteroids:
+            // Spawn wave of asteroids
+            if(isFullTick){
+                for(let i = 0; i < NUMASTEROIDS; i++){
+                    entities.push(new Asteroid());
+                }
+            }
+            // Check if win
+            if(player.traveledDistance >= MARSDISTANCE){
+                state = states.win;
+            }
+            break;
+        case states.loss:
+            entities = [];
+            break;
+        case states.win:
+            entities = [];
+            break;
     }
 
-    // Go through the entities and proceed with their actions
     for(entity of entities){
-        // AI decision making
-        if((entity instanceof Enemy) && player.isEnabled){
-            entity.moveTarget.x = player.position.x;
-            entity.moveTarget.y = player.position.y;
-        }
-
         // Collision Detection
         for(other of entities){
             if(other != entity){
@@ -59,9 +88,16 @@ function main(){
         // Draw Entities to Screen
         drawShape(entity);
 
-        // Remove Disabled Entities
-        entities = entities.filter(entity => entity.isEnabled);
+        // Draw Healthbar and Stat
+        if(entity instanceof Player){
+            drawHealth(entity);
+            printStats(entity);
+        }
+
+
     }
+    // Remove Disabled Entities
+    entities = entities.filter(entity => entity.isEnabled);
 }
 
 main();

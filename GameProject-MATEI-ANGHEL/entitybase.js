@@ -1,5 +1,5 @@
 class Entity{
-    constructor(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints){
+    constructor(x, y, vx, vy, shape, sprite, rotation, height, width, maxHP){
         this.position = new Vector2d(x, y);
         this.velocity = new Vector2d(vx, vy);
         this.rotation = rotation;
@@ -7,7 +7,8 @@ class Entity{
         this.sprite = sprite;
         this.height = height;
         this.width = width;
-        this.hitpoints = hitpoints;
+        this.maxHP = maxHP;
+        this.hitpoints = this.maxHP;
         this.isCollideable = true;
         this.isEnabled = true;
     }
@@ -23,7 +24,7 @@ class Entity{
 
     onHit(collidedObject){
         if(this.isCollideable){
-            console.log("Collision between: ", collidedObject, this);
+            //console.log("Collision between: ", collidedObject, this);
             // Calculate Consequences
             if(collidedObject instanceof Projectile){
                 this.hitpoints -= collidedObject.damage;

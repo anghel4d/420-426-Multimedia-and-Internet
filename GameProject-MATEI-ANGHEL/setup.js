@@ -30,8 +30,7 @@ canvas.addEventListener('keyup', event => {
 });
 
 // Store Mouse Movements
-let mouseX = 0;
-let mouseY = 0;
+let mousePos = new Vector2d(0, 0);
 
 // Event Listener for Mouse Movements
 document.addEventListener("mousemove", mouseMoveHandler, false);
@@ -40,6 +39,6 @@ function mouseMoveHandler(e){
     let scaleX = canvas.width / rect.width;
     let scaleY = canvas.height / rect.height;
 
-    mouseX = Math.trunc((e.clientX - rect.left) * scaleX);
-    mouseY = Math.trunc((e.clientY - rect.top) * scaleY);
+    mousePos.x = Math.trunc((e.clientX - rect.left) * scaleX);
+    mousePos.y = Math.trunc((e.clientY - rect.top) * scaleY);
 }

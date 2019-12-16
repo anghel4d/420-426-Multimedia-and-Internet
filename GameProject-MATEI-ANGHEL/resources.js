@@ -48,7 +48,7 @@ class Shape{    // has to be updated to remove redundant color tag
 }
 
 class Rectangle extends Shape{
-    constructor(height, width, colour){
+    constructor(width, height, colour){
         super(colour);
         this.height = height;
         this.width = width;

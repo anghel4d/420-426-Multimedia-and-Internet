@@ -1,8 +1,8 @@
-function setShipAngle(){
-    let dx = mouseX - player.position.x;
-    let dy = mouseY - player.position.y;
+function setShipAngle(entity, target){
+    let dx = target.x - entity.position.x;
+    let dy = target.y - entity.position.y;
     let angle = Math.atan2(dx, dy);
-    player.rotation = angle;
+    entity.rotation = angle;
 }
 
 function playerControls(){

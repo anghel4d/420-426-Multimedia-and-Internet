@@ -44,29 +44,31 @@ class Weapon{
 
     shoot(){
         // spawn the projectiles and fire them in the direction specified
-        let temp = [];
-        for(let i = 0; i < this.count; i++){
-            let headingVector = new Vector2d(Math.sin(this.direction), Math.cos(this.direction));
-            headingVector + getRandomDouble(-this.spread / 2, this.spread / 2);
-            temp.push(new Projectile(this.origin.x, this.origin.y, this.velocity * headingVector.x, this.velocity * headingVector.y, this.damage));
+        if(this.canShoot){
+            let temp = [];
+            for(let i = 0; i < this.count; i++){
+                let headingVector = new Vector2d(Math.sin(this.direction), Math.cos(this.direction));
+                headingVector + getRandomDouble(-this.spread / 2, this.spread / 2);
+                temp.push(new Projectile(this.origin.x, this.origin.y, this.velocity * headingVector.x, this.velocity * headingVector.y, this.damage));
+            }
+            entities = entities.concat(temp);
+            this.canShoot = false;
+            setTimeout( () => {
+                this.reload()
+            }, this.cooldown);
         }
-        entities = entities.concat(temp);
-        this.canShoot = false;
-        setTimeout( () => {
-            this.reload()
-        }, this.cooldown);
     }
 }
 
 class Player extends Entity{
-    constructor(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints, baseSpeed, thrustMod){
+    constructor(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints, baseSpeed, thrustMod, travelSpeed){
         super(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints)
-        this.travelSpeed = 0;
+        this.travelSpeed = travelSpeed;
         this.traveledDistance = 0;
         this.baseSpeed = baseSpeed;
         this.thrustMod = thrustMod;
         // spread, count, cooldown, damage, origin, direction, velocity
-        this.weapon = new Weapon(0, 1, 1, PLAYERBASEDAMAGE, new Vector2d(this.position.x, this.position.y), this.rotation, PROJECTILESPEED);
+        this.weapon = new Weapon(0, 1, PLAYERBASECOOLDOWN, PLAYERBASEDAMAGE, new Vector2d(this.position.x, this.position.y), this.rotation, PROJECTILESPEED);
     }
 
     // Player Control Actions
@@ -129,30 +131,63 @@ class Player extends Entity{
     }
 }
 
+// After running out of ammunition, the aliens became an army of kamikazes
 class Enemy extends Entity{
-    constructor(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints, behaviour, mX, mY, atkX, atkY, weaponType){
-        super(x, y, vx, vy, shape, sprite, rotation, height, width, hitpoints);
-        this.behaviour = behaviour;
-        this.moveTarget = new Vector2d(mX, mY);
-        this.atkTarget = new Vector2d(atkX, atkY);
-        this.weapon = new Weapon(weaponType);
+    constructor(){
+        super();
+        this.moveTarget = new Vector2d(getRandomInt(0, canvas.width), getRandomInt(0, canvas.width));
+        this.atkTarget = new Vector2d(null, null);
+        this.rotation = 0;
+        this.maxHP = ENEMYMAXHP;
+        this.hitpoints = this.maxHP;
+        //this.weapon = new Weapon(0, 1, ENEMYWEPDELAY, ENEMYBASEDAMAGE, new Vector2d(this.position.x, this.position.y), this.rotation, PROJECTILESPEED);
+        this.spawn();
     }
 
+    spawn(){
+        this.width = ENEMYMAXSIZE;
+        this.height = ENEMYMAXSIZE;
+        this.position.x = getRandomInt(0, canvas.width);
+        this.position.y = getRandomInt(0, canvas.height);
+        this.shape = new Rectangle(ENEMYMAXSIZE, ENEMYMAXSIZE, ENEMYCOLOUR);
+    }
+
+    pickMoveTarget(){
+        this.moveTarget.x = player.position.x;
+        this.moveTarget.y = player.position.y;
+    }
+
+    /* pickAttackTarget(){
+        this.atkTarget.x = player.position.x;
+        this.atkTarget.y = player.position.y;
+    } */
+
     turn(){
-        // logic for changing move and atk targets
+        // Pick a new movement target
+        this.pickMoveTarget()
+
+        // Move to target spot on screen
         if(this.position.x < this.moveTarget.x){
-            this.position.x += 5;
+            this.position.x += ENEMYSPEED;
         }
         else if(this.position.x > this.moveTarget.x){
-            this.position.x -= 5;
+            this.position.x -= ENEMYSPEED;
         }
 
         if(this.position.y < this.moveTarget.y){
-            this.position.y += 5;
+            this.position.y += ENEMYSPEED;
         }
         else if(this.position.y > this.moveTarget.y){
-            this.position.y -= 5;
+            this.position.y -= ENEMYSPEED;
         }
+
+       /*  this.pickAttackTarget(); */
+
+        // Rotate to attack target
+        /* setShipAngle(this, this.atkTarget); */
+
+        // Attempt to fire weapon
+        /* this.weapon.shoot(); */
     }
 
     update(){
@@ -178,13 +213,14 @@ class Asteroid extends Entity{
         this.position.y = getRandomInt(-canvas.height, -this.height);
         this.velocity.x = 0;
         this.velocity.y = getRandomInt(5, 15);
-        this.shape = new Rectangle(xSize, ySize, "purple");
-        this.hitpoints = Math.floor(this.mass / 10);
-        console.log("Hitpoints: ", this.hitpoints);
+        this.shape = new Rectangle(xSize, ySize, ASTEROIDCOLOUR);
+        this.maxHP  = Math.floor(this.mass / 10);
+        this.hitpoints = this.maxHP;
+        //console.log("Hitpoints: ", this.hitpoints);
     }
 
     enforceBounds(){
-        if(this.position.y > canvas.height){
+        if(this.position.y - this.height > canvas.height){
             this.isEnabled = false;
         } 
     }
