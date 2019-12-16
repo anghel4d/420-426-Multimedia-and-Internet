@@ -46,6 +46,7 @@ function main(){
             break;
         case states.loss:
             entities = [];
+            document.location.href = "gameover.html";
             break;
         case states.win:
             entities = [];
