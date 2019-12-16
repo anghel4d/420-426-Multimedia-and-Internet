@@ -67,6 +67,7 @@ class Player extends Entity{
         this.traveledDistance = 0;
         this.baseSpeed = baseSpeed;
         this.thrustMod = thrustMod;
+        this.hitSound = new Audio("data/music/scream.mp3");
         // spread, count, cooldown, damage, origin, direction, velocity
         this.weapon = new Weapon(0, 1, PLAYERBASECOOLDOWN, PLAYERBASEDAMAGE, new Vector2d(this.position.x, this.position.y), this.rotation, PROJECTILESPEED);
     }
@@ -103,6 +104,11 @@ class Player extends Entity{
         let wepY = this.position.y + l * Math.cos(this.rotation);
         this.weapon.origin = new Vector2d(wepX, wepY);
         this.weapon.shoot();
+    }
+
+    onHit(entityThatHitThisOne){
+        this.hitSound.play();
+        super.onHit(entityThatHitThisOne);
     }
 
     enforceBounds(){
